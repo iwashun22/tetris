@@ -9,6 +9,8 @@ const pixelSize = 25;
 const width = 12; 
 const height = 18;
 
+const backgroundColor = '#FFEEFF';
+
 canvas.setAttribute('width', `${pixelSize * width}px`);
 canvas.setAttribute('height', `${pixelSize * height}px`);
 
@@ -22,12 +24,34 @@ const shape = [
       4 | 5
       6 | 7
    */
-   [0, 2, 4, 5], // L
-   [0, 1, 2, 4], // F
-   [0, 2, 3, 5], // Z
-   [1, 3, 2, 4], // S
-   [0, 1, 2, 3], // O
-   [0, 2, 4, 6]  // I
+   {
+      shape: [0, 2, 4, 5], // L
+      color: '#000BEB' // blue
+   },
+   {
+      shape: [0, 1, 2, 4], // F
+      color: '#FFA200' // orange
+   },
+   {
+      shape: [0, 2, 3, 5], // Z
+      color: '#00FFF1' // cyan 
+   },
+   {
+      shape: [1, 3, 2, 4], // S
+      color: '#3CFF00' // green
+   },
+   {
+      shape: [0, 1, 2, 3], // O
+      color: '#FFF600' // yellow
+   },
+   {
+      shape: [0, 2, 4, 6],  // I
+      color: '#F20000' // red
+   },
+   {
+      shape: [1, 2, 3, 5], // T
+      color: '#FF00EB' // pink
+   }
 ]
 
 /// global game object ///
@@ -35,7 +59,7 @@ const shape = [
 const game = {
    piece: null,
    speed: 200,
-   filledSpace: [],
+   filledSpace: [], // f[0] = x, f[1] = y, f[2] = color
    countCooldown: 0, // this is for cooldown the keyboard event especially down-arrow
    cooldown: 15,
    countDelay: 0, // this is going to be the speed of a piece falling down
@@ -49,7 +73,8 @@ const game = {
 class piece {
    constructor(arr){
       this.rotation = 0;
-      this.shape = [...arr];
+      this.shape = [...arr.shape];
+      this.color = arr.color;
       this.eachPositionX = [];
       this.eachPositionY = [];
    }
@@ -61,7 +86,7 @@ function init(){
    game.moveSide = 0;
    game.filledSpace = [];
 
-   ctx.fillStyle = '#FFF69E';
+   ctx.fillStyle = backgroundColor;
    ctx.fillRect(0, 0, canvas.width, canvas.height);
 
    ctx.fillStyle = 'black';
@@ -156,16 +181,16 @@ function movePiece(){
 
 function addToFilledSpace(){
    for(let i = 0; i < game.piece.shape.length; i++){
-      game.filledSpace.push([game.piece.eachPositionX[i], game.piece.eachPositionY[i]]);
+      game.filledSpace.push([game.piece.eachPositionX[i], game.piece.eachPositionY[i], game.piece.color]);
    }
    game.piece = null;
 }
 
 function drawBackground(){
-   ctx.fillStyle = '#FFF69E';
+   ctx.fillStyle = backgroundColor;
    ctx.fillRect(0, 0, canvas.width, canvas.height);
    game.filledSpace.forEach(f => {
-      ctx.fillStyle = 'blue';
+      ctx.fillStyle = f[2];
       ctx.fillRect(
          f[0] - (pixelSize / 2),
          f[1] - (pixelSize / 2),
@@ -178,7 +203,7 @@ function drawBackground(){
 function drawPiece(){
    if(game.piece != null)
    for(let i = 0; i < game.piece.shape.length; i++){
-      ctx.fillStyle = 'blue';
+      ctx.fillStyle = game.piece.color;
       ctx.fillRect(
          game.piece.eachPositionX[i] - (pixelSize / 2),
          game.piece.eachPositionY[i] - (pixelSize / 2),
