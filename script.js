@@ -59,7 +59,7 @@ const shape = [
 const game = {
    piece: null,
    speed: 200,
-   filledSpace: [], // f[0] = x, f[1] = y, f[2] = color
+   filledSpace: [], // this will contain the arrays of [x, y, color]
    countCooldown: 0, // this is for cooldown the keyboard event especially down-arrow
    cooldown: 15,
    countDelay: 0, // this is going to be the speed of a piece falling down
