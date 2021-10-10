@@ -144,7 +144,22 @@ function createPiece(){
 function movePiece(){
 
    if(game.moveSide != 0){
-      game.piece.eachPositionX = game.piece.eachPositionX.map(p => p + game.moveSide);
+      let nextToBlocks = false;
+
+      for(let i = 0; i < game.piece.shape.length; i++){
+         for(const b of game.filledSpace){
+            if(
+               b[1] == game.piece.eachPositionY[i] &&
+               b[0] == game.piece.eachPositionX[i] + game.moveSide
+            ){
+               nextToBlocks = true;
+            }
+         }
+      }
+
+      if(!nextToBlocks){
+         game.piece.eachPositionX = game.piece.eachPositionX.map(p => p + game.moveSide);
+      }
       game.moveSide = 0;
    }
 
