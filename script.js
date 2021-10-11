@@ -77,6 +77,8 @@ class piece {
       this.color = arr.color;
       this.eachPositionX = [];
       this.eachPositionY = [];
+      this.middleX = canvas.width / 2;
+      this.middleY = 0;
    }
 }
 
@@ -137,6 +139,8 @@ function createPiece(){
          game.piece.eachPositionY.push(
             Math.floor(game.piece.shape[i] / 2) * pixelSize + (pixelSize / 2) - (pixelSize * 4)
          )
+
+         game.piece.middleY = -pixelSize * 2;
       }
    }
 }
@@ -159,9 +163,12 @@ function movePiece(){
 
       if(!nextToBlocks){
          game.piece.eachPositionX = game.piece.eachPositionX.map(p => p + game.moveSide);
+         game.piece.middleX += game.moveSide;
       }
       game.moveSide = 0;
    }
+
+   rotatePiece();
 
    if(game.countDelay <= 0){
       let isTouchedTheFloor = false;
@@ -187,6 +194,7 @@ function movePiece(){
 
       if(!isTouchedTheFloor){
          game.piece.eachPositionY = game.piece.eachPositionY.map(p => p + pixelSize);
+         game.piece.middleY += pixelSize;
       }
 
       game.countDelay = game.delay;
@@ -245,7 +253,8 @@ function addKeyEvent(e){
          placeToTheBottom();
       }
       else if(e.key == 'z'){
-         rotatePiece();
+         game.piece.rotation += 90;
+         game.piece.rotation %= 360;
       }
    }
 }
@@ -285,16 +294,125 @@ function placeToTheBottom(){
 }
 
 function rotatePiece(){
-   const bottom = Math.max(...game.piece.eachPositionY);
+   if(game.piece.rotation == 0)
+   {
 
-   let same = 0;
-   for(let i = 0; i < game.piece.shape.length; i++){
-      if(game.piece.shape[i] % 2 == 0){
-         same++;
+      for(let i = 0; i < game.piece.shape.length; i++){
+         game.piece.shape[i] % 2 == 0? 
+            game.piece.eachPositionX[i] = game.piece.middleX - (pixelSize / 2)
+            :
+            game.piece.eachPositionX[i] = game.piece.middleX + (pixelSize / 2);
+      }
+      for(let i = 0; i < game.piece.shape.length; i++){
+         switch(game.piece.shape[i]){
+            case 0:
+            case 1:
+               game.piece.eachPositionY[i] = game.piece.middleY - pixelSize - (pixelSize / 2);
+               break;
+            case 2:
+            case 3:   
+               game.piece.eachPositionY[i] = game.piece.middleY - (pixelSize / 2);
+               break;
+            case 4:
+            case 5:
+               game.piece.eachPositionY[i] = game.piece.middleY + (pixelSize / 2);
+               break;
+            case 6:
+            case 7:
+               game.piece.eachPositionY[i] = game.piece.middleY + pixelSize + (pixelSize / 2);
+               break;
+         }
+      }
+
+   }
+   else if(game.piece.rotation == 90)
+   {
+
+      for(let i = 0; i < game.piece.shape.length; i++){
+         game.piece.shape[i] % 2 == 0? 
+            game.piece.eachPositionY[i] = game.piece.middleY + (pixelSize / 2)
+            :
+            game.piece.eachPositionY[i] = game.piece.middleY - (pixelSize / 2);
+      }
+      for(let i = 0; i < game.piece.shape.length; i++){
+         switch(game.piece.shape[i]){
+            case 0:
+            case 1:
+               game.piece.eachPositionX[i] = game.piece.middleX - pixelSize - (pixelSize / 2);
+               break;
+            case 2:
+            case 3:   
+               game.piece.eachPositionX[i] = game.piece.middleX - (pixelSize / 2);
+               break;
+            case 4:
+            case 5:
+               game.piece.eachPositionX[i] = game.piece.middleX + (pixelSize / 2);
+               break;
+            case 6:
+            case 7:
+               game.piece.eachPositionX[i] = game.piece.middleX + pixelSize + (pixelSize / 2);
+               break;
+         }
       }
    }
-   console.log(same);
-   game.piece.eachPositionY.forEach(y => {
+   else if(game.piece.rotation == 180)
+   {
 
-   });
+      for(let i = 0; i < game.piece.shape.length; i++){
+         game.piece.shape[i] % 2 == 0? 
+            game.piece.eachPositionX[i] = game.piece.middleX + (pixelSize / 2)
+            :
+            game.piece.eachPositionX[i] = game.piece.middleX - (pixelSize / 2);
+      }
+      for(let i = 0; i < game.piece.shape.length; i++){
+         switch(game.piece.shape[i]){
+            case 0:
+            case 1:
+               game.piece.eachPositionY[i] = game.piece.middleY + pixelSize + (pixelSize / 2);
+               break;
+            case 2:
+            case 3:   
+               game.piece.eachPositionY[i] = game.piece.middleY + (pixelSize / 2);
+               break;
+            case 4:
+            case 5:
+               game.piece.eachPositionY[i] = game.piece.middleY - (pixelSize / 2);
+               break;
+            case 6:
+            case 7:
+               game.piece.eachPositionY[i] = game.piece.middleY - pixelSize - (pixelSize / 2);
+               break;
+         }
+      }
+   }
+   else if(game.piece.rotation == 270)
+   {
+
+      for(let i = 0; i < game.piece.shape.length; i++){
+         game.piece.shape[i] % 2 == 0? 
+            game.piece.eachPositionY[i] = game.piece.middleY - (pixelSize / 2)
+            :
+            game.piece.eachPositionY[i] = game.piece.middleY + (pixelSize / 2);
+      }
+      for(let i = 0; i < game.piece.shape.length; i++){
+         switch(game.piece.shape[i]){
+            case 0:
+            case 1:
+               game.piece.eachPositionX[i] = game.piece.middleX + pixelSize + (pixelSize / 2);
+               break;
+            case 2:
+            case 3:   
+               game.piece.eachPositionX[i] = game.piece.middleX + (pixelSize / 2);
+               break;
+            case 4:
+            case 5:
+               game.piece.eachPositionX[i] = game.piece.middleX - (pixelSize / 2);
+               break;
+            case 6:
+            case 7:
+               game.piece.eachPositionX[i] = game.piece.middleX - pixelSize - (pixelSize / 2);
+               break;
+         }
+      }
+   }
 }
