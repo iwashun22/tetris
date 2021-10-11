@@ -285,5 +285,16 @@ function placeToTheBottom(){
 }
 
 function rotatePiece(){
-   
+   const bottom = Math.max(...game.piece.eachPositionY);
+
+   let same = 0;
+   for(let i = 0; i < game.piece.shape.length; i++){
+      if(game.piece.shape[i] % 2 == 0){
+         same++;
+      }
+   }
+   console.log(same);
+   game.piece.eachPositionY.forEach(y => {
+
+   });
 }
