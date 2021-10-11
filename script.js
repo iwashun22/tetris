@@ -6,7 +6,7 @@ const ctx = canvas.getContext('2d');
 /// game board ///
 
 const pixelSize = 25;
-const width = 12; 
+const width = 12; // needs to the even number
 const height = 18;
 
 const backgroundColor = '#FFEEFF';
@@ -120,7 +120,7 @@ function ticker(){
       drawBackground();
       drawPiece();
       
-      //checkBlocks();
+      removeBlocks();
    }
 }
 
@@ -236,6 +236,37 @@ function drawPiece(){
    }
 }
 
+function removeBlocks(){
+   let stack = 0;
+
+   for(let i = 0; i < height; i++){
+      const currentY = (i * pixelSize) + (pixelSize / 2);
+      
+      game.filledSpace.forEach(f => {
+         if(
+            f[1] == currentY
+            ){
+               stack++;
+            }
+      })
+      
+
+      if(stack == width){
+         console.log('hi')
+         game.filledSpace = game.filledSpace.filter(f => f[1] != currentY);
+         game.filledSpace.forEach(f => {
+            if(
+               f[1] < currentY
+            ){
+               f[1] += pixelSize
+            }
+         })
+      }
+
+      stack = 0;
+   }
+}
+
 function addKeyEvent(e){
    if(game.isOver){
       if(e.key == 'Enter') startGame();
@@ -285,6 +316,7 @@ function placeToTheBottom(){
       })
 
       game.piece.eachPositionY = game.piece.eachPositionY.map(y => y + pixelSize);
+      game.piece.middleY += pixelSize;
 
    }
 
