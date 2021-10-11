@@ -17,7 +17,7 @@ canvas.setAttribute('height', `${pixelSize * height}px`);
 console.log(canvas);
 console.log(ctx);
 
-const shape = [
+const tetromino = [
    /*
       0 | 1
       2 | 3
@@ -26,31 +26,31 @@ const shape = [
    */
    {
       shape: [0, 2, 4, 5], // L
-      color: '#000BEB' // blue
+      color: '#0017DE' // blue
    },
    {
       shape: [0, 1, 2, 4], // F
-      color: '#FFA200' // orange
+      color: '#DE9900' // orange
    },
    {
       shape: [0, 2, 3, 5], // Z
-      color: '#00FFF1' // cyan 
+      color: '#00D2DE' // cyan 
    },
    {
       shape: [1, 3, 2, 4], // S
-      color: '#3CFF00' // green
+      color: '#00DE0F' // green
    },
    {
       shape: [0, 1, 2, 3], // O
-      color: '#FFF600' // yellow
+      color: '#D3DE00' // yellow
    },
    {
       shape: [0, 2, 4, 6],  // I
-      color: '#F20000' // red
+      color: '#DE0000' // red
    },
    {
       shape: [1, 2, 3, 5], // T
-      color: '#FF00EB' // pink
+      color: '#D800DE' // pink
    }
 ]
 
@@ -124,8 +124,8 @@ function ticker(){
 
 function createPiece(){
    if(game.piece == null){
-      const random = Math.floor(Math.random() * shape.length);
-      game.piece = new piece(shape[random]);
+      const random = Math.floor(Math.random() * tetromino.length);
+      game.piece = new piece(tetromino[random]);
 
       for(let i = 0; i < game.piece.shape.length; i++){
          game.piece.eachPositionX.push(
@@ -244,6 +244,9 @@ function addKeyEvent(e){
       else if(e.key == 'ArrowDown'){
          placeToTheBottom();
       }
+      else if(e.key == 'z'){
+         rotatePiece();
+      }
    }
 }
 
@@ -279,4 +282,8 @@ function placeToTheBottom(){
    game.countDelay = 20;
 
    }
+}
+
+function rotatePiece(){
+   
 }
