@@ -447,4 +447,18 @@ function rotatePiece(){
          }
       }
    }
+
+   while(
+      game.piece.eachPositionX.includes(canvas.width + (pixelSize / 2))
+   ){
+      game.piece.eachPositionX = game.piece.eachPositionX.map(x => x - pixelSize);
+      game.piece.middleX -= pixelSize;
+   }
+
+   while(
+      game.piece.eachPositionX.includes(0 - (pixelSize / 2))
+   ){
+      game.piece.eachPositionX = game.piece.eachPositionX.map(x => x + pixelSize);
+      game.piece.middleX += pixelSize;
+   }
 }
