@@ -99,7 +99,7 @@ function init(){
       canvas.height / 2
    )
 
-   document.addEventListener('keydown', addKeyEvent);
+   document.addEventListener('keydown', keyEvent);
 }
 init();
 
@@ -121,6 +121,7 @@ function ticker(){
       drawPiece();
       
       removeBlocks();
+      checkGame();
    }
 }
 
@@ -267,7 +268,45 @@ function removeBlocks(){
    }
 }
 
-function addKeyEvent(e){
+function checkGame(){
+   return new Promise((ful, rej) => {
+      let filled = 0;
+      game.filledSpace.forEach(f => {
+         if(
+            ((f[0] == (canvas.width / 2) - (pixelSize / 2) || f[0] == (canvas.width / 2) + (pixelSize / 2)) 
+            &&
+            f[1] == 0 + (pixelSize / 2)) ||
+            f[1] < 0
+            ){
+               game.isOver = true;
+               document.removeEventListener('keydown', keyEvent);
+               clearInterval(game.moving);
+               ful('game over');
+            }
+      })
+   })
+   .then(msg => {
+      setTimeout(() => {
+         ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
+         ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+         ctx.fillStyle = 'black';
+         ctx.font = '40px Arial';
+         ctx.fillText(msg, 50, canvas.height / 2);
+      }, 500);
+   })
+   .then(() => {
+      setTimeout(() => {
+         console.log('reloading');
+         init();
+      }, 1000);
+   })
+   .catch(err => {
+      console.log(err);
+   });
+}
+
+function keyEvent(e){
    if(game.isOver){
       if(e.key == 'Enter') startGame();
    }
