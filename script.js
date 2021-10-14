@@ -61,7 +61,7 @@ const game = {
    speed: 200,
    filledSpace: [], // this will contain the arrays of [x, y, color]
    countCooldown: 0, // this is for cooldown the keyboard event especially down-arrow
-   cooldown: 15,
+   cooldown: 70,
    countDelay: 0, // this is going to be the speed of a piece falling down
    delay: 15,
    moveSide: 0,
@@ -122,6 +122,8 @@ function ticker(){
       
       removeBlocks();
       checkGame();
+
+      game.countCooldown--;
    }
 }
 
@@ -320,7 +322,10 @@ function keyEvent(e){
          game.moveSide = -pixelSize;
       }
       else if(e.key == 'ArrowDown'){
-         placeToTheBottom();
+         if(game.countCooldown <= 0){
+            game.countCooldown = game.cooldown;
+            placeToTheBottom();
+         }
       }
       else if(e.key == 'z'){
          game.piece.rotation += 90;
@@ -354,8 +359,10 @@ function placeToTheBottom(){
          }
       })
 
-      game.piece.eachPositionY = game.piece.eachPositionY.map(y => y + pixelSize);
-      game.piece.middleY += pixelSize;
+      if(game.piece != null){
+         game.piece.eachPositionY = game.piece.eachPositionY.map(y => y + pixelSize);
+         game.piece.middleY += pixelSize;
+      }
 
    }
 
