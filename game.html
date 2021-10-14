@@ -6,19 +6,38 @@
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <title>Tetris</title>
    <style>
-      body{
+      #canvas{
+         border: 7px black solid;
+      }
+      .middle{
          display: flex;
          align-items: center;
          justify-content: center;
       }
-      #canvas{
-         border: 7px black solid;
+      .controller{
+         margin: 20px 0 20px;
+         text-align: center;
+      }
+      .block{
+         padding: 0;
+         font-size: 20px;
+         border: 1px orange solid;
       }
    </style>
 </head>
 <body>
    
-   <canvas id="canvas"></canvas>
+   <div class="middle">
+      <canvas id="canvas"></canvas>
+   </div>
+
+   <div class="controller">
+      <h4 style="display: inline-block;">controller</h4>
+      <span class="block">z</span>
+      <span class="block">←</span>
+      <span class="block">↓</span>
+      <span class="block">→</span>
+   </div>
 
    <script src="script.js"t></script>
 </body>
